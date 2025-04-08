@@ -62,7 +62,7 @@ export default function Home() {
             {mainList.map((item, i) => (
               <button
                 key={`${item.name}-${i}`}
-                className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded text-black"
+                className="bg-gray-200 hover:bg-gray-300 px-4 py-2 rounded text-black cursor-pointer"
                 onClick={() => handleClickMain(item, i)}
               >
                 {item.name}
@@ -76,7 +76,7 @@ export default function Home() {
             {fruits.map((item, i) => (
               <button
                 key={`${item.name}-fruit-${i}`}
-                className="bg-yellow-100 hover:bg-yellow-200 px-4 py-2 rounded text-black"
+                className="bg-yellow-100 hover:bg-yellow-200 px-4 py-2 rounded text-black cursor-pointer"
                 onClick={() => handleClickType(item, 'Fruit')}
               >
                 {item.name}
@@ -90,7 +90,7 @@ export default function Home() {
             {vegetables.map((item, i) => (
               <button
                 key={`${item.name}-veg-${i}`}
-                className="bg-green-100 hover:bg-green-200 px-4 py-2 rounded text-black"
+                className="bg-green-100 hover:bg-green-200 px-4 py-2 rounded text-black cursor-pointer"
                 onClick={() => handleClickType(item, 'Vegetable')}
               >
                 {item.name}
