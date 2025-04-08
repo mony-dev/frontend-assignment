@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 // Type for each item
 type Item = {
@@ -26,30 +26,40 @@ const ToDoList = () => {
   const [mainList, setMainList] = useState<Item[]>(initialItems);
   const [fruits, setFruits] = useState<Item[]>([]);
   const [vegetables, setVegetables] = useState<Item[]>([]);
-  const timeouts: { [key: string]: NodeJS.Timeout } = {};
+  // useRef to persist the value across renders.
+  const timeouts = useRef<{ [key: string]: NodeJS.Timeout }>({});
 
   const handleClickMain = (item: Item, index: number) => {
     setMainList((prev) => prev.filter((_, i) => i !== index));
+
     if (item.type === "Fruit") setFruits((prev) => [...prev, item]);
     else setVegetables((prev) => [...prev, item]);
 
-    timeouts[item.name] = setTimeout(() => {
+    // Set timer and keep it in useRef
+    timeouts.current[item.name] = setTimeout(() => {
       if (item.type === "Fruit") {
         setFruits((prev) => prev.filter((i) => i.name !== item.name));
       } else {
         setVegetables((prev) => prev.filter((i) => i.name !== item.name));
       }
       setMainList((prev) => [...prev, item]);
+
+      // Remove the timer after it has been used
+      delete timeouts.current[item.name];
     }, 5000);
   };
 
   const handleClickType = (item: Item, type: "Fruit" | "Vegetable") => {
-    clearTimeout(timeouts[item.name]);
+    // cancel timeout and clear
+    clearTimeout(timeouts.current[item.name]);
+    delete timeouts.current[item.name];
+
     if (type === "Fruit") {
       setFruits((prev) => prev.filter((i) => i.name !== item.name));
     } else {
       setVegetables((prev) => prev.filter((i) => i.name !== item.name));
     }
+
     setMainList((prev) => [...prev, item]);
   };
   return (
